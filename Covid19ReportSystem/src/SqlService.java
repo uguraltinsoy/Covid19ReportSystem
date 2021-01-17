@@ -8,9 +8,9 @@ import java.sql.*;
 import java.util.ArrayList;
 
 public class SqlService {
-    private static String dbLocation = "jdbc:mysql://localhost:3306/sqlservice?useUnicode=true&useLegacyDatetimeCode=false&serverTimezone=Turkey";
+    private static String dbLocation = "jdbc:mysql://localhost/covidservice?useUnicode=true&useLegacyDatetimeCode=false&serverTimezone=Turkey";
     private static String name = "root";
-    private static String password = "6110";
+    private static String password = null;
     private static Connection myConnection;
     private static Statement myStatement;
 
