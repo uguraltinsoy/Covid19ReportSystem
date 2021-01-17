@@ -18,30 +18,30 @@
 - Yukarıdaki menuden SQL'i şeçin ve Aşağıda verdiğim kodu girin
 ```
 ```
-CREATE TABLE generaltable (
-    updated INT NOT NULL,
-    country VARCHAR(40) PRIMARY KEY NOT NULL,
-    flag VARCHAR(50),
-    cases INT,
-    todayCases INT,
-    deaths INT,
-    todayDeaths INT,
-    recovered INT,
-    todayRecovered INT,
-    active INT,
-    critical INT,
-    casesPerOneMillion INT,
-    deathsPerOneMillion INT,
-    tests INT,
-    testsPerOneMillion INT,
-    population INT,
-    continent CHAR(25),
-    oneCasePerPeople INT,
-    oneDeathPerPeople INT,
-    oneTestPerPeople INT,
-    activePerOneMillion DOUBLE,
-    recoveredPerOneMillion DOUBLE,
-    criticalPerOneMillion DOUBLE);
+create table generaltable (
+    updated bigint(14) NOT NULL,
+    country varchar(40) PRIMARY KEY NOT NULL,
+    flag varchar(50),
+    cases int(11),
+    todayCases int(11),
+    deaths int(11),
+    todayDeaths int(11),
+    recovered int(11),
+    todayRecovered int(11),
+    active int(11),
+    critical int(11),
+    casesPerOneMillion int(11),
+    deathsPerOneMillion int(11),
+    tests int(11),
+    testsPerOneMillion int(11),
+    population int(11),
+    continent char(25),
+    oneCasePerPeople int(11),
+    oneDeathPerPeople int(11),
+    oneTestPerPeople int(11),
+    activePerOneMillion double,
+    recoveredPerOneMillion double,
+    criticalPerOneMillion double);
 ```
 
 ```
