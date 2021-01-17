@@ -15,7 +15,6 @@ public class SqlService {
 
     public static void main(String[] args) {
 
-
         JSONArray country = (JSONArray) getCountry("Turkey");
         for (Object o : country){
             JSONObject test = (JSONObject) o;
@@ -39,6 +38,4 @@ public class SqlService {
             return null;
         }
     }
-
-
 }
