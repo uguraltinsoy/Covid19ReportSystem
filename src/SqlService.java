@@ -16,7 +16,7 @@ public class SqlService {
     private static Statement myStatement;
 
     private static String BASE_URL = "https://corona.lmao.ninja/v2/countries?yesterday&sort";
-    private static ArrayList<Service> service = new ArrayList<>();
+    private static ArrayList<CovidData> service = new ArrayList<>();
 
 
 
@@ -61,7 +61,7 @@ public class SqlService {
                 double activePerOneMillion = jsonObject.getDouble("activePerOneMillion");
                 double recoveredPerOneMillion = jsonObject.getDouble("recoveredPerOneMillion");
                 double criticalPerOneMillion = jsonObject.getDouble("criticalPerOneMillion");
-                service.add(new Service(updated, country, flag, cases, todayCases, deaths, todayDeaths, recovered,
+                service.add(new CovidData(updated, country, flag, cases, todayCases, deaths, todayDeaths, recovered,
                         todayRecovered, active, critical, casesPerOneMillion, deathsPerOneMillion, tests,
                         testsPerOneMillion, population, continent, oneCasePerPeople, oneDeathPerPeople, oneTestPerPeople,
                         activePerOneMillion, recoveredPerOneMillion, criticalPerOneMillion));
@@ -75,7 +75,7 @@ public class SqlService {
             String delete = "DELETE FROM generaltable";
             PreparedStatement deleteStatement = myConnection.prepareStatement(delete);
             deleteStatement.executeUpdate();
-            for (Service in : service){
+            for (CovidData in : service){
                 String query = "INSERT INTO generaltable(updated, country, flag, cases,todayCases, deaths, " +
                         "todayDeaths, recovered, todayRecovered, active, critical, " +
                         "casesPerOneMillion, deathsPerOneMillion, tests, testsPerOneMillion, population, " +
@@ -130,7 +130,7 @@ public class SqlService {
         }
     }
 }
-class Service{
+class CovidData{
     private int updated;
     private String country;
     private String flag;
@@ -139,7 +139,7 @@ class Service{
     private int oneCasePerPeople, oneDeathPerPeople, oneTestPerPeople;
     private double activePerOneMillion, recoveredPerOneMillion, criticalPerOneMillion;
 
-    public Service(int updated, String country, String flag, int cases, int todayCases, int deaths, int todayDeaths, int recovered, int todayRecovered, int active, int critical, int casesPerOneMillion, int deathsPerOneMillion, int tests, int testsPerOneMillion, int population, String continent, int oneCasePerPeople, int oneDeathPerPeople, int oneTestPerPeople, double activePerOneMillion, double recoveredPerOneMillion, double criticalPerOneMillion) {
+    public CovidData(int updated, String country, String flag, int cases, int todayCases, int deaths, int todayDeaths, int recovered, int todayRecovered, int active, int critical, int casesPerOneMillion, int deathsPerOneMillion, int tests, int testsPerOneMillion, int population, String continent, int oneCasePerPeople, int oneDeathPerPeople, int oneTestPerPeople, double activePerOneMillion, double recoveredPerOneMillion, double criticalPerOneMillion) {
         this.updated = updated;
         this.country = country;
         this.flag = flag;
