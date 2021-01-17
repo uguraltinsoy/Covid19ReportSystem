@@ -4,3 +4,4 @@
 ## 2. Veri JAVA -> SQL Çalıştı
 ## 3. SQL Tabloalr olştur Manuplasyon
 ## 4. Düzgün Bir şekilde Echo ed
+hi <3
