@@ -21,8 +21,7 @@ public class SqlService {
         try {
             myConnection = (Connection) DriverManager.getConnection(dbLocation,name,password);
             myStatement = myConnection.createStatement();
-            System.out.println("BATUHAN");
-            //databaseRefresh();
+            databaseRefresh();
         }catch (Exception e){
             System.out.println(e.getMessage());
         }
