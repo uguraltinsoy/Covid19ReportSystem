@@ -6,6 +6,7 @@ import java.net.URL;
 import java.net.URLConnection;
 import java.sql.*;
 import java.util.ArrayList;
+import java.util.concurrent.TimeUnit;
 
 public class SqlService {
     private static String dbLocation = "jdbc:mysql://localhost/covidservice?useUnicode=true&useLegacyDatetimeCode=false&serverTimezone=Turkey";
@@ -21,7 +22,11 @@ public class SqlService {
         try {
             myConnection = (Connection) DriverManager.getConnection(dbLocation,name,password);
             myStatement = myConnection.createStatement();
-            databaseRefresh();
+            while (true){
+                //databaseRefresh();
+                System.out.println("Tekrar");
+                TimeUnit.HOURS.sleep(1);
+            }
         }catch (Exception e){
             System.out.println(e.getMessage());
         }
