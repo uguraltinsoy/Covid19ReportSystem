@@ -1,6 +1,14 @@
 # Covid19ReportSystem
 
-## 1. Adım
+
+## Kısaca Nedir
+```
+- Java, MySQL, PHP Tabanlı bir Covid takip sitesi
+- Mevcut Verileri Java tarafından Her 1 Saate bir güncellenip MySQL e aktarılır
+- PHP tarafında ise veriler her 1sn de bir kontrol edilir ve güncel olarak gösterilir 
+```
+## Kurulum
+### 1. Adım
 ```
 - Xampp'ı çalıştırın
 - Apache ve MySQL Start
@@ -41,13 +49,13 @@ CREATE TABLE generaltable (
 - Tablonuz oluşturuldu
 ```
 
-## 2. Adım
+### 2. Adım
 ```
 - Xampp'ın kurulu oldugu klasorü açın
-- 'htdocs' adlı klasorün içini boşaltın ve Github daki PHP dosyasının içindeki 'index.php' yi içine atın
+- 'htdocs' adlı klasorün içini boşaltın ve Github daki PHP dosyasının içindeki 'index.php' ve 'table.php' yi içine atın
 ```
 
-## 3. Adım
+### 3. Adım
 ```
 - IntelliJ IDEA da Open Project diyip Github daki 'Covid19ReportSystem' ü şeçin ve projeyi run layın
 - Son olarak Xampp üzerinden  Apache Admin e Tıklayıp test edin	
