@@ -1,3 +1,4 @@
+import android.os.Handler;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import java.io.BufferedReader;
@@ -8,7 +9,6 @@ import java.sql.*;
 import java.util.ArrayList;
 
 public class SqlService {
-
     private static String dbLocation = "jdbc:mysql://localhost:3306/sqlservice?useUnicode=true&useLegacyDatetimeCode=false&serverTimezone=Turkey";
     private static String name = "root";
     private static String password = "6110";
@@ -18,6 +18,14 @@ public class SqlService {
     private static String BASE_URL = "https://corona.lmao.ninja/v2/countries?yesterday&sort";
     private static ArrayList<CovidData> service = new ArrayList<>();
 
+    Handler handler = new Handler();
+    private Runnable runnableCode = new Runnable() {
+        @Override
+        public void run() {
+
+            handler.postDelayed(runnableCode, 2000);
+        }
+    };
 
 
     public static void main(String[] args) {
@@ -25,7 +33,7 @@ public class SqlService {
             myConnection = (Connection) DriverManager.getConnection(dbLocation,name,password);
             myStatement = myConnection.createStatement();
             //databaseRefresh();
-
+            handler.post(runnableCode);
         }catch (Exception e){
             System.out.println(e.getMessage());
         }
