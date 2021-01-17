@@ -18,17 +18,20 @@ public class SqlService {
     private static String BASE_URL = "https://corona.lmao.ninja/v2/countries?yesterday&sort";
     private static ArrayList<Service> service = new ArrayList<>();
 
+
+
     public static void main(String[] args) {
         try {
             myConnection = (Connection) DriverManager.getConnection(dbLocation,name,password);
             myStatement = myConnection.createStatement();
-            databaseReflesh();
+            //databaseRefresh();
+
         }catch (Exception e){
             System.out.println(e.getMessage());
         }
     }
 
-    private static void databaseReflesh(){
+    private static void databaseRefresh(){
         service.clear();
         JSONArray jsonArray = getCountry();
         for (int i = 0; i < jsonArray.length();i++){
