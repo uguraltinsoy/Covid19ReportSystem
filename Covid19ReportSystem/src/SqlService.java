@@ -23,8 +23,7 @@ public class SqlService {
             myConnection = (Connection) DriverManager.getConnection(dbLocation,name,password);
             myStatement = myConnection.createStatement();
             while (true){
-                //databaseRefresh();
-                System.out.println("Tekrar");
+                databaseRefresh();
                 TimeUnit.HOURS.sleep(1);
             }
         }catch (Exception e){
