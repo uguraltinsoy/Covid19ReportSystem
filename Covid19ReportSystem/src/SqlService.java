@@ -37,11 +37,11 @@ public class SqlService {
         for (int i = 0; i < jsonArray.length();i++){
             try {
                 JSONObject jsonObject = jsonArray.getJSONObject(i);
-                int updated = jsonObject.getInt("updated"); // 14
-                String country = jsonObject.getString("country"); //40
+                long updated = jsonObject.getLong("updated");
+                String country = jsonObject.getString("country");
                 JSONObject countryInfo = jsonObject.getJSONObject("countryInfo");
-                String flag = countryInfo.getString("flag"); //50
-                int cases = jsonObject.getInt("cases"); //10
+                String flag = countryInfo.getString("flag");
+                int cases = jsonObject.getInt("cases");
                 int todayCases = jsonObject.getInt("todayCases");
                 int deaths = jsonObject.getInt("deaths");
                 int todayDeaths = jsonObject.getInt("todayDeaths");
@@ -83,7 +83,7 @@ public class SqlService {
                         "activePerOneMillion, recoveredPerOneMillion, criticalPerOneMillion)"+
                         "VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
                 PreparedStatement preparedStatement = myConnection.prepareStatement(query);
-                preparedStatement.setInt(1, in.getUpdated());
+                preparedStatement.setLong(1, in.getUpdated());
                 preparedStatement.setString(2, in.getCountry());
                 preparedStatement.setString(3, in.getFlag());
                 preparedStatement.setInt(4, in.getCases());
@@ -131,7 +131,7 @@ public class SqlService {
     }
 }
 class CovidData{
-    private int updated;
+    private long updated;
     private String country;
     private String flag;
     private int cases, todayCases, deaths, todayDeaths, recovered, todayRecovered, active, critical, casesPerOneMillion, deathsPerOneMillion,tests, testsPerOneMillion, population;
@@ -139,7 +139,7 @@ class CovidData{
     private int oneCasePerPeople, oneDeathPerPeople, oneTestPerPeople;
     private double activePerOneMillion, recoveredPerOneMillion, criticalPerOneMillion;
 
-    public CovidData(int updated, String country, String flag, int cases, int todayCases, int deaths, int todayDeaths, int recovered, int todayRecovered, int active, int critical, int casesPerOneMillion, int deathsPerOneMillion, int tests, int testsPerOneMillion, int population, String continent, int oneCasePerPeople, int oneDeathPerPeople, int oneTestPerPeople, double activePerOneMillion, double recoveredPerOneMillion, double criticalPerOneMillion) {
+    public CovidData(long updated, String country, String flag, int cases, int todayCases, int deaths, int todayDeaths, int recovered, int todayRecovered, int active, int critical, int casesPerOneMillion, int deathsPerOneMillion, int tests, int testsPerOneMillion, int population, String continent, int oneCasePerPeople, int oneDeathPerPeople, int oneTestPerPeople, double activePerOneMillion, double recoveredPerOneMillion, double criticalPerOneMillion) {
         this.updated = updated;
         this.country = country;
         this.flag = flag;
@@ -165,7 +165,7 @@ class CovidData{
         this.criticalPerOneMillion = criticalPerOneMillion;
     }
 
-    public int getUpdated() {
+    public long getUpdated() {
         return updated;
     }
 
