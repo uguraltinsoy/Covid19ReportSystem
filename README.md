@@ -2,21 +2,20 @@
 
 
 # Kısaca Nedir
-```
 - Java, MySQL, PHP Tabanlı bir Covid takip sitesi
 - Mevcut Verileri Java tarafından Her 1 Saate bir güncellenip MySQL e aktarılır
 - PHP tarafında ise veriler her 1sn de bir kontrol edilir ve güncel olarak gösterilir 
-```
+
 # Kurulum
 ## 1. Adım
-```
+
 - Xampp'ı çalıştırın
 - Apache ve MySQL Start
 - Ardından MySQL Admin'e basın
 - Açılan sayfada sol tarafda datalar yer alıcak ordan yeni diyip adını 'covidservice' koyun
 - Sonra o datayı seçin 
 - Yukarıdaki menuden SQL'i şeçin ve Aşağıda verdiğim kodu girin
-```
+
 ### 1. Tablo
 ```
 create table generaltable (
@@ -85,13 +84,9 @@ JOIN generaltable AS gt ON rp.country = gt.country ORDER BY `cp`.`country` ASC
 - Tablonuz oluşturuldu
 
 ## 2. Adım
-```
 - Xampp'ın kurulu oldugu klasorü açın
 - 'htdocs' adlı klasorün içini boşaltın ve Github daki PHP dosyasının içindeki 'index.php' ve 'table.php' yi içine atın
-```
 
 ## 3. Adım
-```
 - IntelliJ IDEA da Open Project diyip Github daki 'Covid19ReportSystem' ü şeçin ve projeyi run layın
-- Son olarak Xampp üzerinden  Apache Admin e Tıklayıp test edin	
-```
+- Son olarak Xampp üzerinden  Apache Admin e Tıklayıp test edin 
