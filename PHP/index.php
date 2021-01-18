@@ -19,7 +19,7 @@ $conn = mysqli_connect($servername, $username, $password, $database);
 		.styled-table {
 			width: 100%;
 			border-collapse: collapse;
-			margin: 25px 0;
+			/*margin: 25px 0;*/
 			font-size: 0.9em;
 			font-family: sans-serif;
 			min-width: 400px;
@@ -34,7 +34,7 @@ $conn = mysqli_connect($servername, $username, $password, $database);
 
 		.styled-table th,
 		.styled-table td {
-			padding: 12px 15px;
+			padding: 10px;
 		}
 
 		.styled-table tbody tr {
@@ -75,6 +75,24 @@ $conn = mysqli_connect($servername, $username, $password, $database);
 			padding-top: 6px;
 			color: white;
 			font-weight: bold;
+		}
+
+		.txt {
+			color: rgb(0, 0, 0);
+			font-size: 20px;
+			width: 80%;
+			margin: auto;
+			text-align: left;
+			font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+		}
+
+		.form-control {
+			margin: auto;
+			margin-top: 2px;
+			border: 1px solid rgb(150, 150, 150);
+			box-sizing: border-box;
+			border-radius: .25rem;
+			height: 30px;
 		}
 	</style>
 
@@ -200,105 +218,244 @@ $conn = mysqli_connect($servername, $username, $password, $database);
 	?>
 
 	<div hidden id="piechart"></div>
-	<div style="width: 70%; margin:auto;">
-		<form method="get">
-			<div style="float:left; width: 50%;">Search : </div>
-			<div style="float:left; width: 50%;"></div>
-			<div style="float:left; width: 50%;"><input type="text" name="subject"></div>
-		</form>
-		<?php echo $_GET['subject']; ?>
-	</div>
-	<div style="width: 70%; margin:auto;">
-		<table class="styled-table">
-			<thead>
-				<tr>
-					<th>#</th>
-					<th>Flag</th>
-					<th>Country</th>
-					<th>Total Cases</th>
-					<th>Total Deaths</th>
-					<th>Total Recovered</th>
-					<th>Active</th>
-					<th>Critical</th>
-					<th>Cases Per 1M</th>
-					<th>Deaths Per 1M</th>
-					<th>Tests</th>
-					<th>Tests 1M Pop</th>
-					<th>Population</th>
-					<th>Continent</th>
-				</tr>
-			</thead>
-			<tbody>
-				<?php
-				$query = "SELECT SUM(cases)as 'Cases', SUM(deaths)as 'Deaths', SUM(recovered) as 'Recovered', SUM(active)as 'Active', SUM(critical) as 'Critical' FROM generaltable";
-				$result = mysqli_query($conn, $query);
-				$json = mysqli_fetch_object($result);
-				$encode = json_encode($json);
-				$Cases = number_format($json->Cases);
-				$Deaths = number_format($json->Deaths);
-				$Recovered = number_format($json->Recovered);
-				$Active = number_format($json->Active);
-				$Critical = number_format($json->Critical);
-				echo "<tr>";
-				echo "<td></td>";
-				echo "<td><img src=\"https://bit.ly/39M6fkO\"></td>";
-				echo "<td>World</td>";
-				echo "<td>{$Cases}</td>";
-				echo "<td>{$Deaths}</td>";
-				echo "<td>{$Recovered}</td>";
-				echo "<td>{$Active}</td>";
-				echo "<td>{$Critical}</td>";
-				echo "<td></td>";
-				echo "<td></td>";
-				echo "<td></td>";
-				echo "<td></td>";
-				echo "<td></td>";
-				echo "<td></td>";
-				echo "</tr>";
-				?>
-				<?php
-				$query = "SELECT * FROM generaltable Order By cases DESC";
-				$result = mysqli_query($conn, $query);
-				$count = 1;
-				while ($row = mysqli_fetch_array($result)) {
-					$country = $row[1];
-					$flag = $row[2];
-					$todayCases = number_format($row[3]);
-					$todayDeaths  = number_format($row[5]);
-					$todayRecovered = number_format($row[7]);
-					$active = number_format($row[9]);
-					$critical = number_format($row[10]);
-					$casesPerOneMillion = number_format($row[11]);
-					$deathsPerOneMillion = number_format($row[12]);
-					$tests = number_format($row[13]);
-					$testsPerOneMillion = number_format($row[14]);
-					$population = number_format($row[15]);
-					$continent = $row[16];
 
-					echo "<tr>";
-					echo "<td>{$count}</td>";
-					echo "<td><img src=\"$flag\">";
-					echo "<td>{$country}</td>";
-					echo "<td>{$todayCases}</td>";
-					echo "<td>{$todayDeaths}</td>";
-					echo "<td>{$todayRecovered}</td>";
-					echo "<td>{$active}</td>";
-					echo "<td>{$critical}</td>";
-					echo "<td>{$casesPerOneMillion}</td>";
-					echo "<td>{$deathsPerOneMillion}</td>";
-					echo "<td>{$tests}</td>";
-					echo "<td>{$testsPerOneMillion}</td>";
-					echo "<td>{$population}</td>";
-					echo "<td>{$continent}</td>";
-					echo "</tr>";
-					$count++;
+	<div style="width: 70%; margin:auto;">
+		<div style="margin-top: 10px;">
+			<div class="post_div txt" style="float:left; width: 160px;">Search Country : </div>
+			<div class="post_div" style="float:left; width: 200px"><input class="form-control" type="text" id="mSumbit"></div>
+		</div>
+	</div>
+
+	<script type="text/javascript">
+		var sorting = "DESC";
+		var totalCases = true;
+		var type = 0;
+
+		$(document).ready(function() {
+			readData();
+
+			$("#mCases").click(function() {
+				if (totalCases) {
+					sorting = "ASC"
+					totalCases = false;
+					type = 0;
+					readData();
+				} else {
+					sorting = "DESC"
+					totalCases = true;
+					type = 0;
+					readData();
 				}
-				?>
+			});
+			$("#mDeaths").click(function() {
+				if (totalCases) {
+					sorting = "ASC"
+					totalCases = false;
+					type = 1;
+					readData();
+				} else {
+					sorting = "DESC"
+					totalCases = true;
+					type = 1;
+					readData();
+				}
+			});
+			$("#mRecovered").click(function() {
+				if (totalCases) {
+					sorting = "ASC"
+					totalCases = false;
+					type = 2;
+					readData();
+				} else {
+					sorting = "DESC"
+					totalCases = true;
+					type = 2;
+					readData();
+				}
+			});
+			$("#mActive").click(function() {
+				if (totalCases) {
+					sorting = "ASC"
+					totalCases = false;
+					type = 3;
+					readData();
+				} else {
+					sorting = "DESC"
+					totalCases = true;
+					type = 3;
+					readData();
+				}
+			});
+			$("#mCritical").click(function() {
+				if (totalCases) {
+					sorting = "ASC"
+					totalCases = false;
+					type = 4;
+					readData();
+				} else {
+					sorting = "DESC"
+					totalCases = true;
+					type = 4;
+					readData();
+				}
+			});
+			$("#mCasesPer").click(function() {
+				if (totalCases) {
+					sorting = "ASC"
+					totalCases = false;
+					type = 5;
+					readData();
+				} else {
+					sorting = "DESC"
+					totalCases = true;
+					type = 5;
+					readData();
+				}
+			});
+			$("#mDeathsPer").click(function() {
+				if (totalCases) {
+					sorting = "ASC"
+					totalCases = false;
+					type = 6;
+					readData();
+				} else {
+					sorting = "DESC"
+					totalCases = true;
+					type = 6;
+					readData();
+				}
+			});
+			$("#mTests").click(function() {
+				if (totalCases) {
+					sorting = "ASC"
+					totalCases = false;
+					type = 7;
+					readData();
+				} else {
+					sorting = "DESC"
+					totalCases = true;
+					type = 7;
+					readData();
+				}
+			});
+			$("#mTestsPop").click(function() {
+				if (totalCases) {
+					sorting = "ASC"
+					totalCases = false;
+					type = 8;
+					readData();
+				} else {
+					sorting = "DESC"
+					totalCases = true;
+					type = 8;
+					readData();
+				}
+			});
+			$("#mPopulation").click(function() {
+				if (totalCases) {
+					sorting = "ASC"
+					totalCases = false;
+					type = 9;
+					readData();
+				} else {
+					sorting = "DESC"
+					totalCases = true;
+					type = 9;
+					readData();
+				}
+			});
 
-			</tbody>
-		</table>
+			$('#mSumbit').on('input', function(e) {
+				var txt = $('#mSumbit').val();
+				if (txt != "") {
+					$.post("table.php", {
+						queryValues: "SELECT * FROM generaltable WHERE country LIKE \'" + txt + "%\' Order By country " + sorting
+					}, function(gonderVeri) {
+						$('#tableDiv').html(gonderVeri);
+					});
+				} else {
+					$.post("table.php", {
+						queryValues: "SELECT * FROM generaltable Order By cases " + sorting
+					}, function(gonderVeri) {
+						$('#tableDiv').html(gonderVeri);
+					});
+				}
+			});
+
+			function readData() {
+				var queryValues = "SELECT * FROM generaltable Order By cases " + sorting;
+				switch (type) {
+					case 0:
+						queryValues = "SELECT * FROM generaltable Order By cases " + sorting;
+						break;
+					case 1:
+						queryValues = "SELECT * FROM generaltable Order By deaths " + sorting;
+						break;
+					case 2:
+						queryValues = "SELECT * FROM generaltable Order By recovered " + sorting;
+						break;
+					case 3:
+						queryValues = "SELECT * FROM generaltable Order By active " + sorting;
+						break;
+					case 4:
+						queryValues = "SELECT * FROM generaltable Order By critical " + sorting;
+						break;
+					case 5:
+						queryValues = "SELECT * FROM generaltable Order By casesPerOneMillion " + sorting;
+						break;
+					case 6:
+						queryValues = "SELECT * FROM generaltable Order By deathsPerOneMillion " + sorting;
+						break;
+					case 7:
+						queryValues = "SELECT * FROM generaltable Order By tests " + sorting;
+						break;
+					case 8:
+						queryValues = "SELECT * FROM generaltable Order By testsPerOneMillion " + sorting;
+						break;
+					case 9:
+						queryValues = "SELECT * FROM generaltable Order By population " + sorting;
+						break;
+					default:
+				}
+				$.post("table.php", {
+					queryValues: queryValues
+				}, function(gonderVeri) {
+					$('#tableDiv').html(gonderVeri);
+				});
+			}
+		});
+	</script>
+
+	<div style="margin-top:60px;">
+		<div style=" width: 70%;  margin:auto;">
+			<div style="width: 100%;">
+				<table class="styled-table">
+					<thead>
+						<tr>
+							<th style="cursor:pointer; width:60px !important;">#</th>
+							<th style="cursor:pointer; width:120px !important;">Flag</th>
+							<th style="cursor:pointer; width:120px !important;">Country</th>
+							<th id="mCases" style="cursor:pointer; width:120px !important;">Total Cases</th>
+							<th id="mDeaths" style="cursor:pointer; width:100px !important;">Total Deaths</th>
+							<th id="mRecovered" style="cursor:pointer; width:110px !important;">Total Recovered</th>
+							<th id="mActive" style="cursor:pointer; width:110px !important;">Active</th>
+							<th id="mCritical" style="cursor:pointer; width:100px !important;">Critical</th>
+							<th id="mCasesPer" style="cursor:pointer; width:100px !important;">Cases Per 1M</th>
+							<th id="mDeathsPer" style="cursor:pointer; width:100px !important;">Deaths Per 1M</th>
+							<th id="mTests" style="cursor:pointer; width:120px !important;">Tests</th>
+							<th id="mTestsPop" style="cursor:pointer; width:100px !important;">Tests 1M Pop</th>
+							<th id="mPopulation" style="cursor:pointer; width:130px !important;">Population</th>
+							<th style="width:120px;">Continent</th>
+						</tr>
+					</thead>
+				</table>
+			</div>
+			<div id='tableDiv' style="width: 100%; margin:auto;"></div>
+		</div>
 	</div>
-	<div style="height: 80px; width: 100%; background-color:#343434;"></div>
+
+
+	<div style="height: 80px; margin-top:50px; width: 100%; background-color:#343434;"></div>
 </body>
 
 </html>
