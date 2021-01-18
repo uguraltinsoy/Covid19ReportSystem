@@ -5,6 +5,7 @@ $username = "root";
 $password = null;
 
 $conn = mysqli_connect($servername, $username, $password, $database);
+
 ?>
 
 <html>
@@ -44,10 +45,18 @@ $conn = mysqli_connect($servername, $username, $password, $database);
 		.styled-table tbody tr:last-of-type {
 			border-bottom: 2px solid #009879;
 		}
-		img{
+
+		img {
 			width: 80px;
 		}
 	</style>
+
+	<script>
+		function casesClick() {
+			alert("assaffas");			
+			<?php swt(); ?>
+		}
+	</script>
 </head>
 
 <body>
@@ -59,7 +68,7 @@ $conn = mysqli_connect($servername, $username, $password, $database);
 				<th>Flag</th>
 				<th>Country</th>
 				<th>Updated</th>
-				<th>Cases</th>
+				<th style="cursor:pointer;" onclick="casesClick()">Cases</th>
 				<th>Today Cases</th>
 				<th>Deaths</th>
 				<th>Today Deaths</th>
@@ -83,11 +92,26 @@ $conn = mysqli_connect($servername, $username, $password, $database);
 		</thead>
 		<tbody>
 			<?php
-			$query = "SELECT * FROM generaltable";
+			$query = "SELECT * FROM generaltable Order By cases DESC";
+			$bool = true;			
+			function swt()
+			{
+							
+				global $bool;
+				global $query;
+				if ($bool) {
+					$query = "SELECT * FROM generaltable Order By cases DESC";
+					$bool = false;
+				} else {
+					$query = "SELECT * FROM generaltable Order By cases ASC";
+					$bool = true;
+				}
+			}
+
 			$result = mysqli_query($conn, $query);
 			while ($row = mysqli_fetch_array($result)) {
-                $updated = $row[0];                
-                $dt = date('H:i d.m.Y', $updated/1000);
+				$updated = $row[0];
+				$dt = date('H:i d.m.Y', $updated / 1000);
 				$country = $row[1];
 				$flag = $row[2];
 				$cases = $row[3];
@@ -110,7 +134,7 @@ $conn = mysqli_connect($servername, $username, $password, $database);
 				$activePerOneMillion = $row[20];
 				$recoveredPerOneMillion = $row[21];
 				$criticalPerOneMillion = $row[22];
-                                
+
 				echo "<tr>";
 				echo "<td><img src=\"$flag\">";
 				echo "<td>{$country}</td>";
@@ -127,18 +151,18 @@ $conn = mysqli_connect($servername, $username, $password, $database);
 				echo "<td>{$deathsPerOneMillion}</td>";
 				echo "<td>{$tests}</td>";
 				echo "<td>{$testsPerOneMillion}</td>";
-				echo "<td>{$population}</td>";	
-				echo "<td>{$continent}</td>";	
-				echo "<td>{$oneCasePerPeople}</td>";	
-				echo "<td>{$oneDeathPerPeople}</td>";	
-				echo "<td>{$oneTestPerPeople}</td>";	
+				echo "<td>{$population}</td>";
+				echo "<td>{$continent}</td>";
+				echo "<td>{$oneCasePerPeople}</td>";
+				echo "<td>{$oneDeathPerPeople}</td>";
+				echo "<td>{$oneTestPerPeople}</td>";
 				echo "<td>{$activePerOneMillion}</td>";
 				echo "<td>{$recoveredPerOneMillion}</td>";
 				echo "<td>{$criticalPerOneMillion}</td>";
-				echo "</tr>";			
+				echo "</tr>";
 			}
 			?>
-			
+
 		</tbody>
 	</table>
 
