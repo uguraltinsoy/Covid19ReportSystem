@@ -16,7 +16,7 @@ $conn = mysqli_connect($servername, $username, $password, $database);
 		.styled-table {
 			width: 100%;
 			border-collapse: collapse;
-			margin: 25px 0;
+			/*margin: 25px 0;*/
 			font-size: 0.9em;
 			font-family: sans-serif;
 			min-width: 400px;
@@ -24,7 +24,7 @@ $conn = mysqli_connect($servername, $username, $password, $database);
 		}
 
 		.styled-table thead tr {
-			background-color: #009879;
+			background-color: #5D5D5D;
 			color: #ffffff;
 			text-align: left;
 		}
@@ -39,7 +39,7 @@ $conn = mysqli_connect($servername, $username, $password, $database);
 		}
 
 		.styled-table tbody tr:nth-of-type(even) {
-			background-color: #f3f3f3;
+			background-color: #D6D6D6;
 		}
 
 		.styled-table tbody tr:last-of-type {
@@ -49,79 +49,88 @@ $conn = mysqli_connect($servername, $username, $password, $database);
 		img {
 			width: 80px;
 		}
+		tbody{
+			border-left: 1px solid #D6D6D6;
+    		border-right: 1px solid #D6D6D6;
+		}
 	</style>
 </head>
 
 <body>
 </body>
-<div style="width: 100%; height: 100%;">
+<div style="width: 70%;  margin:auto;">
 	<table class="styled-table">
 		<thead>
 			<tr>
+				<th>#</th>
 				<th>Flag</th>
 				<th>Country</th>
-				<th>Updated</th>
-				<th>Cases</th>
-				<th>Today Cases</th>
-				<th>Deaths</th>
-				<th>Today Deaths</th>
-				<th>Recovered</th>
-				<th>Today Recovered</th>
+				<th>Total Cases</th>
+				<th>Total Deaths</th>
+				<th>Total Recovered</th>
 				<th>Active</th>
 				<th>Critical</th>
-				<th>Cases Per One Million</th>
-				<th>Deaths Per One Million</th>
+				<th>Cases Per 1M</th>
+				<th>Deaths Per 1M</th>
 				<th>Tests</th>
-				<th>Tests Per One Million</th>
+				<th>Tests 1M Pop</th>
 				<th>Population</th>
 				<th>Continent</th>
-				<th>One Case Per People</th>
-				<th>One Death Per People</th>
-				<th>One Test Per People</th>
-				<th>Active Per One Million</th>
-				<th>Recovered Per One Million</th>
-				<th>Critical Per One Million</th>
 			</tr>
 		</thead>
 		<tbody>
 			<?php
+			$query = "SELECT SUM(cases)as 'Cases', SUM(deaths)as 'Deaths', SUM(recovered) as 'Recovered', SUM(active)as 'Active', SUM(critical) as 'Critical' FROM generaltable";
+			$result = mysqli_query($conn, $query);
+			$json = mysqli_fetch_object($result);
+			$encode = json_encode($json);
+			$Cases = number_format($json->Cases);
+			$Deaths = number_format($json->Deaths);
+			$Recovered = number_format($json->Recovered);
+			$Active = number_format($json->Active);
+			$Critical = number_format($json->Critical);
+			echo "<tr>";
+			echo "<td></td>";
+			echo "<td><img src=\"https://bit.ly/39M6fkO\"></td>";
+			echo "<td>World</td>";
+			echo "<td>{$Cases}</td>";
+			echo "<td>{$Deaths}</td>";
+			echo "<td>{$Recovered}</td>";
+			echo "<td>{$Active}</td>";
+			echo "<td>{$Critical}</td>";
+			echo "<td></td>";
+			echo "<td></td>";
+			echo "<td></td>";
+			echo "<td></td>";
+			echo "<td></td>";
+			echo "<td></td>";
+			echo "</tr>";
+			?>
+			<?php
 			$query = "SELECT * FROM generaltable Order By cases DESC";
 			$result = mysqli_query($conn, $query);
+			$count = 1;
 			while ($row = mysqli_fetch_array($result)) {
-				$updated = $row[0];
-				$dt = date('H:i d.m.Y', $updated / 1000);
 				$country = $row[1];
 				$flag = $row[2];
-				$cases = $row[3];
-				$todayCases = $row[4];
-				$deaths = $row[5];
-				$todayDeaths  = $row[6];
-				$recovered = $row[7];
-				$todayRecovered = $row[8];
-				$active = $row[9];
-				$critical = $row[10];
-				$casesPerOneMillion = $row[11];
-				$deathsPerOneMillion = $row[12];
-				$tests = $row[13];
-				$testsPerOneMillion = $row[14];
-				$population = $row[15];
+				$todayCases = number_format($row[3]);
+				$todayDeaths  = number_format($row[5]);
+				$todayRecovered = number_format($row[7]);
+				$active = number_format($row[9]);
+				$critical = number_format($row[10]);
+				$casesPerOneMillion = number_format($row[11]);
+				$deathsPerOneMillion = number_format($row[12]);
+				$tests = number_format($row[13]);
+				$testsPerOneMillion = number_format($row[14]);
+				$population = number_format($row[15]);
 				$continent = $row[16];
-				$oneCasePerPeople = $row[17];
-				$oneDeathPerPeople = $row[18];
-				$oneTestPerPeople = $row[19];
-				$activePerOneMillion = $row[20];
-				$recoveredPerOneMillion = $row[21];
-				$criticalPerOneMillion = $row[22];
 
 				echo "<tr>";
+				echo "<td>{$count}</td>";
 				echo "<td><img src=\"$flag\">";
 				echo "<td>{$country}</td>";
-				echo "<td>{$dt}</td>";
-				echo "<td>{$cases}</td>";
 				echo "<td>{$todayCases}</td>";
-				echo "<td>{$deaths}</td>";
 				echo "<td>{$todayDeaths}</td>";
-				echo "<td>{$recovered}</td>";
 				echo "<td>{$todayRecovered}</td>";
 				echo "<td>{$active}</td>";
 				echo "<td>{$critical}</td>";
@@ -131,17 +140,14 @@ $conn = mysqli_connect($servername, $username, $password, $database);
 				echo "<td>{$testsPerOneMillion}</td>";
 				echo "<td>{$population}</td>";
 				echo "<td>{$continent}</td>";
-				echo "<td>{$oneCasePerPeople}</td>";
-				echo "<td>{$oneDeathPerPeople}</td>";
-				echo "<td>{$oneTestPerPeople}</td>";
-				echo "<td>{$activePerOneMillion}</td>";
-				echo "<td>{$recoveredPerOneMillion}</td>";
-				echo "<td>{$criticalPerOneMillion}</td>";
 				echo "</tr>";
+				$count++;
 			}
 			?>
 
 		</tbody>
 	</table>
+</div>
+<div style="height: 80px; width: 100%; background-color:#343434;"></div>
 
 </html>

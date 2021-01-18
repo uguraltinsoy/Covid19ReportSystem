@@ -108,6 +108,7 @@ public class SqlService {
                 preparedStatement.setDouble(23, in.getCriticalPerOneMillion());
                 preparedStatement.executeUpdate();
             }
+            System.out.println("Upload Success");
         }catch (Exception e){
             System.out.println(e.getMessage());
         }
