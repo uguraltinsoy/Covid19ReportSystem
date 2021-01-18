@@ -23,13 +23,36 @@ $conn = mysqli_connect($servername, $username, $password, $database);
 		});
 	</script>
 
+	<style>
+		.TopDiv {
+			text-align: center;
+			font-size: 50px;
+			font-family: sans-serif;
+			color: #303030;
+		}
+	</style>
+
 </head>
 
 <body>
-	<?php	
-		$query = "SELECT * FROM generaltable Order By cases DESC LIMIT 1";
+	<div class="TopDiv">
+		<div>Coronavirus Cases</div>
+		<?php
+		$query = "SELECT SUM(cases) FROM generaltable";
 		$result = mysqli_query($conn, $query);
-		while ($row = mysqli_fetch_array($result)) {
+		$json = mysqli_fetch_object($result);
+		$encode = json_encode($json);
+		$div = $json['{SUM(cases)}'];
+		echo "<div>{$encode}</div>";
+		?>
+		
+	</div>
+
+
+	<?php
+	$query = "SELECT * FROM generaltable Order By cases DESC LIMIT 1";
+	$result = mysqli_query($conn, $query);
+	while ($row = mysqli_fetch_array($result)) {
 		$updated = $row[0];
 		$dt = date('H:i d.m.Y', $updated / 1000);
 		$country = $row[1];
@@ -54,8 +77,8 @@ $conn = mysqli_connect($servername, $username, $password, $database);
 		$activePerOneMillion = $row[20];
 		$recoveredPerOneMillion = $row[21];
 		$criticalPerOneMillion = $row[22];
-		}
-		echo "<script>
+	}
+	echo "<script>
 			google.charts.load('current', {
 				'packages': ['corechart']
 			});
@@ -77,10 +100,14 @@ $conn = mysqli_connect($servername, $username, $password, $database);
 				var chart = new google.visualization.PieChart(document.getElementById('piechart'));
 				chart.draw(data, options);
 			}
-			</script>"; ?>
+			</script>";
+	?>
 
-		<div id="piechart"></div>
-		<div id="refreshData" style="width: 100%; height: 100%;"></div>
-	</body>
+	<div id="piechart"></div>
+	<div id="refreshData" style="width: 100%; height: 100%;"></div>
+
+
+
+</body>
 
 </html>
