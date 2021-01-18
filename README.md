@@ -73,19 +73,16 @@ FROM generaltable;
 ```
 ### 6. Tablo
 ```
-SELECT cp.country, caseByPop, testByPop, caseByTest, deadByPop, deadByCase, recoverByPop, recoverByCase
-FROM casesPercentage AS cp
-    JOIN 
-    testsPercentage AS tp ON cp.country = tp.country
-    JOIN
-    deathsPercentage AS dp ON tp.country = dp.country
-    JOIN 
-    recoveredPercentage AS rp ON dp.country = rp.country;
+SELECT cp.country, caseByPop, testByPop, caseByTest, deadByPop, deadByCase, recoverByPop, recoverbyCase,  flag 
+FROM casesPercentage AS cp 
+JOIN testsPercentage AS tp ON cp.country = tp.country 
+JOIN deathsPercentage AS dp ON tp.country = dp.country 
+JOIN recoveredPercentage AS rp ON dp.country = rp.country 
+JOIN generaltable AS gt ON rp.country = gt.country ORDER BY `cp`.`country` ASC
 ```
 
 - Kodu Girdikten sonra sol tarafta bulunan Git Buttonuna basın
 - Tablonuz oluşturuldu
-```
 
 ## 2. Adım
 ```
