@@ -86,7 +86,8 @@ $conn = mysqli_connect($servername, $username, $password, $database);
 			$query = "SELECT * FROM generaltable";
 			$result = mysqli_query($conn, $query);
 			while ($row = mysqli_fetch_array($result)) {
-				$updated = $row[0];
+                $updated = $row[0];                
+                $dt = date('H:i d.m.Y', $updated/1000);
 				$country = $row[1];
 				$flag = $row[2];
 				$cases = $row[3];
@@ -109,11 +110,11 @@ $conn = mysqli_connect($servername, $username, $password, $database);
 				$activePerOneMillion = $row[20];
 				$recoveredPerOneMillion = $row[21];
 				$criticalPerOneMillion = $row[22];
-
+                                
 				echo "<tr>";
 				echo "<td><img src=\"$flag\">";
 				echo "<td>{$country}</td>";
-				echo "<td>{$updated}</td>";
+				echo "<td>{$dt}</td>";
 				echo "<td>{$cases}</td>";
 				echo "<td>{$todayCases}</td>";
 				echo "<td>{$deaths}</td>";
