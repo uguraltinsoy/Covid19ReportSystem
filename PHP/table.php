@@ -50,13 +50,6 @@ $conn = mysqli_connect($servername, $username, $password, $database);
 			width: 80px;
 		}
 	</style>
-
-	<script>
-		function casesClick() {
-			alert("assaffas");			
-			<?php swt(); ?>
-		}
-	</script>
 </head>
 
 <body>
@@ -68,7 +61,7 @@ $conn = mysqli_connect($servername, $username, $password, $database);
 				<th>Flag</th>
 				<th>Country</th>
 				<th>Updated</th>
-				<th style="cursor:pointer;" onclick="casesClick()">Cases</th>
+				<th>Cases</th>
 				<th>Today Cases</th>
 				<th>Deaths</th>
 				<th>Today Deaths</th>
@@ -93,21 +86,6 @@ $conn = mysqli_connect($servername, $username, $password, $database);
 		<tbody>
 			<?php
 			$query = "SELECT * FROM generaltable Order By cases DESC";
-			$bool = true;			
-			function swt()
-			{
-							
-				global $bool;
-				global $query;
-				if ($bool) {
-					$query = "SELECT * FROM generaltable Order By cases DESC";
-					$bool = false;
-				} else {
-					$query = "SELECT * FROM generaltable Order By cases ASC";
-					$bool = true;
-				}
-			}
-
 			$result = mysqli_query($conn, $query);
 			while ($row = mysqli_fetch_array($result)) {
 				$updated = $row[0];
