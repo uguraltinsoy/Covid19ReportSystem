@@ -3,7 +3,7 @@ $servername = "localhost";
 $database = "covidservice";
 $username = "root";
 $password = null;
-
+// SQL BAĞLANTISI
 $conn = mysqli_connect($servername, $username, $password, $database);
 
 ?>
@@ -12,15 +12,17 @@ $conn = mysqli_connect($servername, $username, $password, $database);
 
 <head>
 	<title>Covid 19 Table</title>
+	<!-- Acık kütphaneler -->
+	<!-- JQUERY -->
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 	<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+	<!-- BOOTSTRAP -->
 	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
 
 	<style>
 		.styled-table {
 			width: 100%;
 			border-collapse: collapse;
-			/*margin: 25px 0;*/
 			font-size: 0.9em;
 			font-family: sans-serif;
 			min-width: 400px;
@@ -104,7 +106,7 @@ $conn = mysqli_connect($servername, $username, $password, $database);
 			display: inline-block;
 			box-sizing: border-box;
 			text-align: center;
-			
+
 			cursor: pointer;
 			font-weight: bold;
 			border: 1px solid #ddd;
@@ -119,8 +121,6 @@ $conn = mysqli_connect($servername, $username, $password, $database);
 			color: black;
 		}
 	</style>
-
-
 </head>
 
 <body>
@@ -128,24 +128,38 @@ $conn = mysqli_connect($servername, $username, $password, $database);
 	<div class="TopDiv">
 		<div style="color:#555;font-weight: bold;">Coronavirus Cases</div>
 		<?php
+		// SQL SELECTİMİZİ YAPIYURZ sum(cases) => Coronavirus Cases
 		$query = "SELECT sum(cases) as 'sumValue' FROM generaltable";
+		// SQL sorgusunu database e gonderiyor
 		$result = mysqli_query($conn, $query);
+		// SQL sorgusunun databaseni cekiyoruz
 		$json = mysqli_fetch_object($result);
+		// JSON Parse işlemi yapıyurz
 		$encode = json_encode($json);
 		$div = $json->sumValue;
+		// Sayıyı formatlıyoruz
 		$format = number_format($div);
+		// div e yazdırıyoruz
 		echo "<div style=\"color:#aaa;font-weight: bold;\">$format</div>";
 		?>
+
 		<div style="margin-top: 20px; color:#555;font-weight: bold;">Deaths</div>
 		<?php
+		// SQL SELECTİMİZİ YAPIYURZ sum(deaths) => Coronavirus Cases
 		$query = "SELECT sum(deaths) as 'sumValue' FROM generaltable";
+		// SQL sorgusunu database e gonderiyor
 		$result = mysqli_query($conn, $query);
+		// SQL sorgusunun databaseni cekiyoruz
 		$json = mysqli_fetch_object($result);
+		// JSON Parse işlemi yapıyurz
 		$encode = json_encode($json);
 		$div = $json->sumValue;
+		// Sayıyı formatlıyoruz
 		$format = number_format($div);
+		// div e yazdırıyoruz
 		echo "<div style=\"color:#696969;font-weight: bold;\">$format</div>";
 		?>
+
 		<div style="margin-top: 20px; color:#555;font-weight: bold;">Recovered</div>
 		<?php
 		$query = "SELECT sum(recovered ) as 'sumValue' FROM generaltable";
@@ -157,6 +171,7 @@ $conn = mysqli_connect($servername, $username, $password, $database);
 		echo "<div style=\"color:#8ACA2B;font-weight: bold;\">$format</div>";
 		?>
 
+		<!-- Bootstrap kütüphansenden row kullanarak 2 eşit div elde ediyoruz -->
 		<div class="container" style="width: 40%; margin-top:50px;">
 			<div class="row">
 				<div class="col-md" style="border: 1px solid #ddd; margin:2px">
@@ -188,6 +203,7 @@ $conn = mysqli_connect($servername, $username, $password, $database);
 		</div>
 	</div>
 
+	<!-- Tabs -->
 	<div style="margin-top: 20px;">
 		<div style="width: 70%; margin:auto; height: 40px;">
 			<div id="table-tab" class="inactice">World Record</div>
@@ -196,63 +212,8 @@ $conn = mysqli_connect($servername, $username, $password, $database);
 		</div>
 	</div>
 
-	<?php
-	$query = "SELECT * FROM generaltable Order By cases DESC LIMIT 1";
-	$result = mysqli_query($conn, $query);
-	while ($row = mysqli_fetch_array($result)) {
-		$updated = $row[0];
-		$dt = date('H:i d.m.Y', $updated / 1000);
-		$country = $row[1];
-		$flag = $row[2];
-		$cases = $row[3];
-		$todayCases = $row[4];
-		$deaths = $row[5];
-		$todayDeaths  = $row[6];
-		$recovered = $row[7];
-		$todayRecovered = $row[8];
-		$active = $row[9];
-		$critical = $row[10];
-		$casesPerOneMillion = $row[11];
-		$deathsPerOneMillion = $row[12];
-		$tests = $row[13];
-		$testsPerOneMillion = $row[14];
-		$population = $row[15];
-		$continent = $row[16];
-		$oneCasePerPeople = $row[17];
-		$oneDeathPerPeople = $row[18];
-		$oneTestPerPeople = $row[19];
-		$activePerOneMillion = $row[20];
-		$recoveredPerOneMillion = $row[21];
-		$criticalPerOneMillion = $row[22];
-	}
-	echo "<script>
-			google.charts.load('current', {
-				'packages': ['corechart']
-			});
-			google.charts.setOnLoadCallback(drawChart);
-			function drawChart() {
-				var data = google.visualization.arrayToDataTable([
-					['Task', 'Hours per Day'],
-					['Today Cases', {$todayCases}],
-					['Today Deaths', {$todayDeaths}],
-					['Today Recovered', {$todayRecovered}],
-					['Critical', {$critical}]
-				]);
-				
-				var options = {
-					'title': 'My Average Day',
-					'width': 500,
-					'height': 300
-				};			
-				var chart = new google.visualization.PieChart(document.getElementById('piechart'));
-				chart.draw(data, options);
-			}
-			</script>";
-	?>
-
-	<div hidden id="piechart"></div>
-
 	<div>
+		<!-- World Record -->
 		<div id="mTableContainer" style="width: 100%;">
 			<div style="width: 70%; margin:auto;">
 				<div style="margin-top: 10px;">
@@ -285,11 +246,13 @@ $conn = mysqli_connect($servername, $username, $password, $database);
 							</thead>
 						</table>
 					</div>
+					<!-- table.php yi çektiğimiz div -->
 					<div id='tableDiv' style="width: 100%; margin:auto;"></div>
 				</div>
 			</div>
 		</div>
 
+		<!-- Percentages -->
 		<div id="mPercentContainer" style="width: 100%; display:none;">
 			<div style="width: 70%; margin:auto;">
 				<div style="margin-top: 10px;">
@@ -297,14 +260,16 @@ $conn = mysqli_connect($servername, $username, $password, $database);
 					<div class="post_div" style="float:left; width: 200px"><input class="form-control" type="text" id="mPercentages"></div>
 				</div>
 			</div>
+			<!-- percentages.php yi çektiğimiz div -->
 			<div id="percentDiv" style="width: 70%; margin:auto; padding-top:40px;"></div>
 		</div>
 
-		<div id="mContinentContainer" style="width: 100%; display:none;">			
+		<!-- Continents -->
+		<div id="mContinentContainer" style="width: 100%; display:none;">
+			<!-- continents.php yi çektiğimiz div -->
 			<div id="continentDiv" style="width: 70%; margin:auto; padding-top:40px;"></div>
 		</div>
 	</div>
-
 
 	<div style="height: 80px; margin-top:50px; width: 100%; background-color:#8ACA2B;"></div>
 
@@ -313,76 +278,87 @@ $conn = mysqli_connect($servername, $username, $password, $database);
 		var totalCases = true;
 		var type = 0;
 
+		// Jquery hazır mı diye kontrol et head bölümünde online bir şeklilde çekildiği için
 		$(document).ready(function() {
+			// radData sayfamız world record bölümünün verisini hıızlı bir şekilde getirmeye yarıyor
 			readData();
 
-			$('#tableDiv').on(function() {
-				$('#tableDiv').width($('#mtopTableDiv').width());
-			});
-
+			// sayfa açıldıgı zaman Jquery hazır ise percentages.php yi percentDiv id li DİV e ekle
 			$.post("percentages.php", {
 				queryValues: "SELECT cp.country, caseByPop, testByPop, caseByTest, deadByPop, deadByCase, recoverByPop, recoverbyCase,  flag FROM casesPercentage AS cp JOIN testsPercentage AS tp ON cp.country = tp.country JOIN deathsPercentage AS dp ON tp.country = dp.country JOIN recoveredPercentage AS rp ON dp.country = rp.country JOIN generaltable AS gt ON rp.country = gt.country ORDER BY `cp`.`country` ASC"
 			}, function(sendData) {
 				$('#percentDiv').html(sendData);
 			});
 
+			// sayfa açıldıgı zaman Jquery hazır ise continents.php yi continentDiv id li DİV e ekle
 			$("#continentDiv").load("continents.php");
 
+			// Tablardan world record a basılırsa yapılıcak olan işlem
 			$("#table-tab").click(function() {
+				// mTableContainer göster gerisini gizle
 				$("#mTableContainer").show();
-				$("#mPercentContainer").hide();				
-				$("#mContinentContainer").hide();		
-
+				$("#mPercentContainer").hide();
+				$("#mContinentContainer").hide();
+				
+				// tıklanan için css i .inactice yap gerisi için css .active classını yukle
 				$("#table-tab").addClass("inactice");
 				$("#percent-tab").addClass("active");
 				$("#continen-tab").addClass("active");
-				
 
-				$("#table-tab").removeClass("active");						
+				// // tıklanan için css i .active yap gerisi için css .inactice classını Cıkart
+				$("#table-tab").removeClass("active");
 				$("#percent-tab").removeClass("inactice");
-				$("#continen-tab").removeClass("inactice");		
+				$("#continen-tab").removeClass("inactice");
 			});
 
 			$("#percent-tab").click(function() {
 				$("#mTableContainer").hide();
-				$("#mPercentContainer").show();				
-				$("#mContinentContainer").hide();	
+				$("#mPercentContainer").show();
+				$("#mContinentContainer").hide();
 
 				$("#table-tab").addClass("active");
 				$("#percent-tab").addClass("inactice");
 				$("#continen-tab").addClass("active");
-				
 
-				$("#table-tab").removeClass("inactice");						
+
+				$("#table-tab").removeClass("inactice");
 				$("#percent-tab").removeClass("active");
-				$("#continen-tab").removeClass("inactice");	
+				$("#continen-tab").removeClass("inactice");
 			});
 
 			$("#continen-tab").click(function() {
 				$("#mTableContainer").hide();
-				$("#mPercentContainer").hide();				
-				$("#mContinentContainer").show();	
+				$("#mPercentContainer").hide();
+				$("#mContinentContainer").show();
 
 				$("#table-tab").addClass("active");
 				$("#percent-tab").addClass("active");
 				$("#continen-tab").addClass("inactice");
-				
 
-				$("#table-tab").removeClass("inactice");						
+
+				$("#table-tab").removeClass("inactice");
 				$("#percent-tab").removeClass("inactice");
-				$("#continen-tab").removeClass("active");	
+				$("#continen-tab").removeClass("active");
 			});
 
+			// Tablo başlıgı mCases idli sıralamaya tıklanında yapılıcaklar
 			$("#mCases").click(function() {
+				// tıklandıysa totalCases i kontrol et tur mu false mı
 				if (totalCases) {
+					// totalCases true ise
 					sorting = "ASC"
 					totalCases = false;
+					// type ı 0 yap kacıncı başlıga tıklandını ekle
 					type = 0;
+					// readData ile verileri tekrardan sıralat
 					readData();
 				} else {
+					// totalCases false ise
 					sorting = "DESC"
 					totalCases = true;
+					// type ı 0 yap kacıncı başlıga tıklandını ekle
 					type = 0;
+					// readData ile verileri tekrardan sıralat
 					readData();
 				}
 			});
@@ -513,15 +489,18 @@ $conn = mysqli_connect($servername, $username, $password, $database);
 				}
 			});
 
+			// World Record da Search Country için içinde yazı var mı yok mu her aksiyonda kontrol et
 			$('#mPercentages').on('input', function(e) {
-				var txt = $('#mPercentages').val();
+				var txt = $('#mPercentages').val();				
 				if (txt != "") {
+					// eğerki içi doluysa 
 					$.post("percentages.php", {
 						queryValues: "SELECT cp.country, caseByPop, testByPop, caseByTest, deadByPop, deadByCase, recoverByPop, recoverbyCase, flag FROM casesPercentage AS cp JOIN testsPercentage AS tp ON cp.country = tp.country JOIN deathsPercentage AS dp ON tp.country = dp.country JOIN recoveredPercentage AS rp ON dp.country = rp.country JOIN generaltable AS gt ON rp.country = gt.country WHERE `cp`.`country` LIKE\'" + txt + "%\' ORDER BY `cp`.`country` ASC"
 					}, function(sendData) {
 						$('#percentDiv').html(sendData);
 					});
 				} else {
+					// eğerki içi boşşsa 
 					$.post("percentages.php", {
 						queryValues: "SELECT cp.country, caseByPop, testByPop, caseByTest, deadByPop, deadByCase, recoverByPop, recoverbyCase,  flag FROM casesPercentage AS cp JOIN testsPercentage AS tp ON cp.country = tp.country JOIN deathsPercentage AS dp ON tp.country = dp.country JOIN recoveredPercentage AS rp ON dp.country = rp.country JOIN generaltable AS gt ON rp.country = gt.country ORDER BY `cp`.`country` ASC"
 					}, function(sendData) {
@@ -530,7 +509,7 @@ $conn = mysqli_connect($servername, $username, $password, $database);
 				}
 			});
 
-
+			// Percentages da Search Country için içinde yazı var mı yok mu her aksiyonda kontrol et
 			$('#mSumbit').on('input', function(e) {
 				var txt = $('#mSumbit').val();
 				if (txt != "") {
@@ -548,6 +527,7 @@ $conn = mysqli_connect($servername, $username, $password, $database);
 				}
 			});
 
+			// readData her çağırıldıgında type e göre bir swich e giriyor
 			function readData() {
 				var queryValues = "SELECT * FROM generaltable Order By cases " + sorting;
 				switch (type) {
@@ -583,6 +563,7 @@ $conn = mysqli_connect($servername, $username, $password, $database);
 						break;
 					default:
 				}
+				// table.php ye queryValues post luyor ve tableDiv de gösteriyor
 				$.post("table.php", {
 					queryValues: queryValues
 				}, function(gonderVeri) {

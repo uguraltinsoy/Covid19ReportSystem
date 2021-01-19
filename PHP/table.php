@@ -5,9 +5,8 @@ $username = "root";
 $password = null;
 
 $conn = mysqli_connect($servername, $username, $password, $database);
-
+// postlanan veriyi çek  anahtar kelimesyle
 $queryValues = $_POST['queryValues'];
-
 ?>
 
 <html>
@@ -19,7 +18,8 @@ $queryValues = $_POST['queryValues'];
 <body>
     <table class="styled-table">        
         <tbody>
-            <?php
+            <?php    
+            // PHP DÜnya verilerini toladtık ilk satıra sabit ekle        
             $wordQuery = "SELECT SUM(cases)as 'Cases', SUM(deaths)as 'Deaths', SUM(recovered) as 'Recovered', SUM(active)as 'Active', SUM(critical) as 'Critical' FROM generaltable";
             $result = mysqli_query($conn, $wordQuery);
             $json = mysqli_fetch_object($result);
@@ -46,9 +46,11 @@ $queryValues = $_POST['queryValues'];
             echo "<td style=\"width:120px !important;\"></td>";
             echo "</tr>";
             ?>
+
             <?php
             $result = mysqli_query($conn, $queryValues);
             $count = 1;
+            // while donguusyle asıl verileri cek
             while ($row = mysqli_fetch_array($result)) {
                 $country = $row[1];
                 $flag = $row[2];

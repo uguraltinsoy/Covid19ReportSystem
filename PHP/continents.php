@@ -37,13 +37,13 @@ $query = "SELECT * From continents";
             $count = 1;
             while ($row = mysqli_fetch_array($result)) {
                 $continent = $row[0];
-                $cases = $row[1];
-                $testByPop  = $row[2];
-                $deaths = $row[3];
-                $recovered = $row[4];
-                $active = $row[5];
-                $tests = $row[6];
-                $population = $row[7];
+                $cases = number_format($row[1]);
+                $testByPop  = number_format($row[2]);
+                $deaths = number_format($row[3]);
+                $recovered = number_format($row[4]);
+                $active = number_format($row[5]);
+                $tests = number_format($row[6]);
+                $population = number_format($row[7]);
 
                 echo "<tr>";
                 echo "<td>{$count}</td>";
