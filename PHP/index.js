@@ -3,7 +3,13 @@ var totalCases = true;
 var type = 0;
 
 $(document).ready(function () {
-    readData();
+    readData();    
+
+    $.post("percent.php", {
+        queryValues : "SELECT cp.country, caseByPop, testByPop, caseByTest, deadByPop, deadByCase, recoverByPop, recoverbyCase,  flag FROM casesPercentage AS cp JOIN testsPercentage AS tp ON cp.country = tp.country JOIN deathsPercentage AS dp ON tp.country = dp.country JOIN recoveredPercentage AS rp ON dp.country = rp.country JOIN generaltable AS gt ON rp.country = gt.country ORDER BY `cp`.`country` ASC"
+    }, function (sendData) {
+        $('#graphDiv').html(sendData);
+    });
 
     $("#table-tab").click(function () {
         $("#mGraphContainer").hide();
@@ -36,6 +42,7 @@ $(document).ready(function () {
             readData();
         }
     });
+
     $("#mDeaths").click(function () {
         if (totalCases) {
             sorting = "ASC"
@@ -49,6 +56,7 @@ $(document).ready(function () {
             readData();
         }
     });
+
     $("#mRecovered").click(function () {
         if (totalCases) {
             sorting = "ASC"
@@ -62,6 +70,7 @@ $(document).ready(function () {
             readData();
         }
     });
+
     $("#mActive").click(function () {
         if (totalCases) {
             sorting = "ASC"
@@ -75,6 +84,7 @@ $(document).ready(function () {
             readData();
         }
     });
+
     $("#mCritical").click(function () {
         if (totalCases) {
             sorting = "ASC"
@@ -88,6 +98,7 @@ $(document).ready(function () {
             readData();
         }
     });
+
     $("#mCasesPer").click(function () {
         if (totalCases) {
             sorting = "ASC"
@@ -101,6 +112,7 @@ $(document).ready(function () {
             readData();
         }
     });
+
     $("#mDeathsPer").click(function () {
         if (totalCases) {
             sorting = "ASC"
@@ -114,6 +126,7 @@ $(document).ready(function () {
             readData();
         }
     });
+
     $("#mTests").click(function () {
         if (totalCases) {
             sorting = "ASC"
@@ -127,6 +140,7 @@ $(document).ready(function () {
             readData();
         }
     });
+
     $("#mTestsPop").click(function () {
         if (totalCases) {
             sorting = "ASC"
@@ -140,6 +154,7 @@ $(document).ready(function () {
             readData();
         }
     });
+    
     $("#mPopulation").click(function () {
         if (totalCases) {
             sorting = "ASC"
@@ -154,24 +169,40 @@ $(document).ready(function () {
         }
     });
 
+    $('#mPercentages').on('input', function (e) {
+        var txt = $('#mPercentages').val();
+        if (txt != "") {
+            $.post("percent.php", {
+                queryValues : "SELECT cp.country, caseByPop, testByPop, caseByTest, deadByPop, deadByCase, recoverByPop, recoverbyCase, flag FROM casesPercentage AS cp JOIN testsPercentage AS tp ON cp.country = tp.country JOIN deathsPercentage AS dp ON tp.country = dp.country JOIN recoveredPercentage AS rp ON dp.country = rp.country JOIN generaltable AS gt ON rp.country = gt.country WHERE `cp`.`country` LIKE\'" + txt + "%\' ORDER BY `cp`.`country` ASC"
+            }, function (sendData) {
+                $('#graphDiv').html(sendData);
+            });
+        } else {
+            $.post("percent.php", {
+                queryValues : "SELECT cp.country, caseByPop, testByPop, caseByTest, deadByPop, deadByCase, recoverByPop, recoverbyCase,  flag FROM casesPercentage AS cp JOIN testsPercentage AS tp ON cp.country = tp.country JOIN deathsPercentage AS dp ON tp.country = dp.country JOIN recoveredPercentage AS rp ON dp.country = rp.country JOIN generaltable AS gt ON rp.country = gt.country ORDER BY `cp`.`country` ASC"
+            }, function (sendData) {
+                $('#graphDiv').html(sendData);
+            });
+        }
+    });
+
+
     $('#mSumbit').on('input', function (e) {
         var txt = $('#mSumbit').val();
         if (txt != "") {
             $.post("table.php", {
-                queryValues: "SELECT * FROM generaltable WHERE country LIKE \'" + txt + "%\' Order By country " + sorting
+                queryValues : "SELECT * FROM generaltable WHERE country LIKE \'" + txt + "%\' Order By country " + sorting
             }, function (gonderVeri) {
                 $('#tableDiv').html(gonderVeri);
             });
         } else {
             $.post("table.php", {
-                queryValues: "SELECT * FROM generaltable Order By cases " + sorting
+                queryValues : "SELECT * FROM generaltable Order By cases " + sorting
             }, function (gonderVeri) {
                 $('#tableDiv').html(gonderVeri);
             });
         }
     });
-
-    $("#graphDiv").load("percentages.php");
 
     function readData() {
         var queryValues = "SELECT * FROM generaltable Order By cases " + sorting;
@@ -213,5 +244,5 @@ $(document).ready(function () {
         }, function (gonderVeri) {
             $('#tableDiv').html(gonderVeri);
         });
-    }   
+    }
 });

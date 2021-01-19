@@ -3,8 +3,11 @@ $servername = "localhost";
 $database = "covidservice";
 $username = "root";
 $password = null;
+
 $conn = mysqli_connect($servername, $username, $password, $database);
-$query = "SELECT cp.country, caseByPop, testByPop, caseByTest, deadByPop, deadByCase, recoverByPop, recoverbyCase,  flag FROM casesPercentage AS cp JOIN testsPercentage AS tp ON cp.country = tp.country JOIN deathsPercentage AS dp ON tp.country = dp.country JOIN recoveredPercentage AS rp ON dp.country = rp.country JOIN generaltable AS gt ON rp.country = gt.country ORDER BY `cp`.`country` ASC";
+
+$queryValues = $_POST['queryValues'];
+
 ?>
 
 <html>
@@ -33,7 +36,7 @@ $query = "SELECT cp.country, caseByPop, testByPop, caseByTest, deadByPop, deadBy
         </thead>
         <tbody>
             <?php
-            $result = mysqli_query($conn, $query);
+            $result = mysqli_query($conn, $queryValues);
             $count = 1;
             while ($row = mysqli_fetch_array($result)) {
                 $country = $row[0];

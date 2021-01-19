@@ -187,6 +187,12 @@ $conn = mysqli_connect($servername, $username, $password, $database);
 		</div>
 
 		<div id="mGraphContainer" style="width: 100%; display:none;">
+			<div style="width: 70%; margin:auto;">
+				<div style="margin-top: 10px;">
+					<div class="post_div txt" style="float:left; width: 160px;">Search Country : </div>
+					<div class="post_div" style="float:left; width: 200px"><input class="form-control" type="text" id="mPercentages"></div>
+				</div>
+			</div>
 			<div id="graphDiv" style="width: 70%; margin:auto; padding-top:40px;"></div>
 		</div>
 	</div>
