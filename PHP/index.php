@@ -12,6 +12,7 @@ $conn = mysqli_connect($servername, $username, $password, $database);
 
 <head>
 	<title>Covid 19 Table</title>
+	<link rel="icon" href="favicon.ico" type="image/x-icon" />
 	<!-- Acık kütphaneler -->
 	<!-- JQUERY -->
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
