@@ -79,6 +79,78 @@ JOIN deathsPercentage AS dp ON tp.country = dp.country
 JOIN recoveredPercentage AS rp ON dp.country = rp.country 
 JOIN generaltable AS gt ON rp.country = gt.country ORDER BY `cp`.`country` ASC
 ```
+### 7. Tablo
+```
+CREATE TABLE continents(
+    continent CHAR(25) PRIMARY KEY NOT NULL,
+        cases INT,
+        deaths INT,
+        recovered INT,
+        active INT,
+        critical INT,
+        tests INT,
+        population INT);
+```
+### 8. Insert
+```
+INSERT INTO continents (continent,cases,deaths,recovered,active,critical,tests,population)
+SELECT 
+    'Asia',sum(cases),sum(deaths),sum(recovered),sum(active),sum(critical),sum(tests),sum(population)
+FROM
+    generaltable
+WHERE
+    generaltable.continent = 'Asia';
+```
+### 9. Insert
+```
+INSERT INTO continents (continent,cases,deaths,recovered,active,critical,tests,population)
+SELECT 
+    'Europe',sum(cases),sum(deaths),sum(recovered),sum(active),sum(critical),sum(tests),sum(population)
+FROM
+    generaltable
+WHERE
+    generaltable.continent = 'Europe';
+```
+### 10. Insert
+```
+INSERT INTO continents (continent,cases,deaths,recovered,active,critical,tests,population)
+SELECT 
+    'North America',sum(cases),sum(deaths),sum(recovered),sum(active),sum(critical),sum(tests),sum(population)
+FROM
+    generaltable
+WHERE
+    generaltable.continent = 'North America';
+```
+### 11. Insert
+```
+INSERT INTO continents (continent,cases,deaths,recovered,active,critical,tests,population)
+SELECT 
+    'South America',sum(cases),sum(deaths),sum(recovered),sum(active),sum(critical),sum(tests),sum(population)
+FROM
+    generaltable
+WHERE
+    generaltable.continent = 'South America';
+```
+### 12. Insert
+```
+INSERT INTO continents (continent,cases,deaths,recovered,active,critical,tests,population)
+SELECT 
+    'Africa',sum(cases),sum(deaths),sum(recovered),sum(active),sum(critical),sum(tests),sum(population)
+FROM
+    generaltable
+WHERE
+    generaltable.continent = 'Africa';
+```
+### 13. Insert
+```
+INSERT INTO continents (continent,cases,deaths,recovered,active,critical,tests,population)
+SELECT 
+    'Australia/Oceania',sum(cases),sum(deaths),sum(recovered),sum(active),sum(critical),sum(tests),sum(population)
+FROM
+    generaltable
+WHERE
+    generaltable.continent = 'Australia/Oceania';
+```
 
 - Kodu Girdikten sonra sol tarafta bulunan Git Buttonuna basın
 - Tablonuz oluşturuldu

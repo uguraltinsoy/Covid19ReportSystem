@@ -16,7 +16,110 @@ $conn = mysqli_connect($servername, $username, $password, $database);
 	<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
 	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
 
-	<link rel="stylesheet" href="index.css" />
+	<style>
+		.styled-table {
+			width: 100%;
+			border-collapse: collapse;
+			/*margin: 25px 0;*/
+			font-size: 0.9em;
+			font-family: sans-serif;
+			min-width: 400px;
+			box-shadow: 0 0 20px rgba(0, 0, 0, 0.15);
+		}
+
+		.styled-table thead tr {
+			background-color: #8ACA2B;
+			color: #ffffff;
+			text-align: left;
+		}
+
+		.styled-table th,
+		.styled-table td {
+			padding: 10px;
+		}
+
+		.styled-table tbody tr {
+			border-bottom: 1px solid #dddddd;
+		}
+
+		.styled-table tbody tr:nth-of-type(even) {
+			background-color: #D6D6D6;
+		}
+
+		.styled-table tbody tr:last-of-type {
+			border-bottom: 2px solid #009879;
+		}
+
+		img {
+			width: 80px;
+		}
+
+		tbody {
+			border-left: 1px solid #D6D6D6;
+			border-right: 1px solid #D6D6D6;
+		}
+
+		.TopDiv {
+			text-align: center;
+			font-size: 50px;
+			font-family: sans-serif;
+			color: #303030;
+		}
+
+		.navbarDiv {
+			height: 80px;
+			width: 100%;
+			font-size: 40px;
+			background-color: #8ACA2B;
+			text-align: left;
+			padding-left: 40px;
+			padding-top: 6px;
+			color: white;
+			font-weight: bold;
+		}
+
+		.txt {
+			color: rgb(0, 0, 0);
+			font-size: 20px;
+			width: 80%;
+			margin: auto;
+			text-align: left;
+			font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+		}
+
+		.form-control {
+			margin: auto;
+			margin-top: 2px;
+			border: 1px solid rgb(150, 150, 150);
+			box-sizing: border-box;
+			border-radius: .25rem;
+			height: 30px;
+		}
+
+		#table-tab,
+		#percent-tab,
+		#continen-tab {
+			width: 33%;
+			padding: 10px;
+			display: inline-block;
+			box-sizing: border-box;
+			text-align: center;
+			
+			cursor: pointer;
+			font-weight: bold;
+			border: 1px solid #ddd;
+		}
+
+		.active {
+			background: #8ACA2B;
+			color: white;
+		}
+
+		.inactice {
+			color: black;
+		}
+	</style>
+
 
 </head>
 
@@ -88,7 +191,8 @@ $conn = mysqli_connect($servername, $username, $password, $database);
 	<div style="margin-top: 20px;">
 		<div style="width: 70%; margin:auto; height: 40px;">
 			<div id="table-tab" class="inactice">World Record</div>
-			<div class="active" id="graph-tab">Percentages</div>
+			<div class="active" id="percent-tab">Percentages</div>
+			<div class="active" id="continen-tab">Continents</div>
 		</div>
 	</div>
 
@@ -186,14 +290,18 @@ $conn = mysqli_connect($servername, $username, $password, $database);
 			</div>
 		</div>
 
-		<div id="mGraphContainer" style="width: 100%; display:none;">
+		<div id="mPercentContainer" style="width: 100%; display:none;">
 			<div style="width: 70%; margin:auto;">
 				<div style="margin-top: 10px;">
 					<div class="post_div txt" style="float:left; width: 160px;">Search Country : </div>
 					<div class="post_div" style="float:left; width: 200px"><input class="form-control" type="text" id="mPercentages"></div>
 				</div>
 			</div>
-			<div id="graphDiv" style="width: 70%; margin:auto; padding-top:40px;"></div>
+			<div id="percentDiv" style="width: 70%; margin:auto; padding-top:40px;"></div>
+		</div>
+
+		<div id="mContinentContainer" style="width: 100%; display:none;">			
+			<div id="continentDiv" style="width: 70%; margin:auto; padding-top:40px;"></div>
 		</div>
 	</div>
 
@@ -208,32 +316,61 @@ $conn = mysqli_connect($servername, $username, $password, $database);
 		$(document).ready(function() {
 			readData();
 
-			$('#tableDiv').on(function(){
+			$('#tableDiv').on(function() {
 				$('#tableDiv').width($('#mtopTableDiv').width());
 			});
 
-			$.post("percent.php", {
+			$.post("percentages.php", {
 				queryValues: "SELECT cp.country, caseByPop, testByPop, caseByTest, deadByPop, deadByCase, recoverByPop, recoverbyCase,  flag FROM casesPercentage AS cp JOIN testsPercentage AS tp ON cp.country = tp.country JOIN deathsPercentage AS dp ON tp.country = dp.country JOIN recoveredPercentage AS rp ON dp.country = rp.country JOIN generaltable AS gt ON rp.country = gt.country ORDER BY `cp`.`country` ASC"
 			}, function(sendData) {
-				$('#graphDiv').html(sendData);
+				$('#percentDiv').html(sendData);
 			});
+
+			$("#continentDiv").load("continents.php");
 
 			$("#table-tab").click(function() {
-				$("#mGraphContainer").hide();
 				$("#mTableContainer").show();
-				$("#table-tab").removeClass("active");
-				$("#graph-tab").addClass("active");
+				$("#mPercentContainer").hide();				
+				$("#mContinentContainer").hide();		
+
 				$("#table-tab").addClass("inactice");
-				$("#graph-tab").removeClass("inactice");
+				$("#percent-tab").addClass("active");
+				$("#continen-tab").addClass("active");
+				
+
+				$("#table-tab").removeClass("active");						
+				$("#percent-tab").removeClass("inactice");
+				$("#continen-tab").removeClass("inactice");		
 			});
 
-			$("#graph-tab").click(function() {
-				$("#mGraphContainer").show();
+			$("#percent-tab").click(function() {
 				$("#mTableContainer").hide();
+				$("#mPercentContainer").show();				
+				$("#mContinentContainer").hide();	
+
 				$("#table-tab").addClass("active");
-				$("#graph-tab").removeClass("active");
-				$("#table-tab").removeClass("inactice");
-				$("#graph-tab").addClass("inactice");
+				$("#percent-tab").addClass("inactice");
+				$("#continen-tab").addClass("active");
+				
+
+				$("#table-tab").removeClass("inactice");						
+				$("#percent-tab").removeClass("active");
+				$("#continen-tab").removeClass("inactice");	
+			});
+
+			$("#continen-tab").click(function() {
+				$("#mTableContainer").hide();
+				$("#mPercentContainer").hide();				
+				$("#mContinentContainer").show();	
+
+				$("#table-tab").addClass("active");
+				$("#percent-tab").addClass("active");
+				$("#continen-tab").addClass("inactice");
+				
+
+				$("#table-tab").removeClass("inactice");						
+				$("#percent-tab").removeClass("inactice");
+				$("#continen-tab").removeClass("active");	
 			});
 
 			$("#mCases").click(function() {
@@ -379,16 +516,16 @@ $conn = mysqli_connect($servername, $username, $password, $database);
 			$('#mPercentages').on('input', function(e) {
 				var txt = $('#mPercentages').val();
 				if (txt != "") {
-					$.post("percent.php", {
+					$.post("percentages.php", {
 						queryValues: "SELECT cp.country, caseByPop, testByPop, caseByTest, deadByPop, deadByCase, recoverByPop, recoverbyCase, flag FROM casesPercentage AS cp JOIN testsPercentage AS tp ON cp.country = tp.country JOIN deathsPercentage AS dp ON tp.country = dp.country JOIN recoveredPercentage AS rp ON dp.country = rp.country JOIN generaltable AS gt ON rp.country = gt.country WHERE `cp`.`country` LIKE\'" + txt + "%\' ORDER BY `cp`.`country` ASC"
 					}, function(sendData) {
-						$('#graphDiv').html(sendData);
+						$('#percentDiv').html(sendData);
 					});
 				} else {
-					$.post("percent.php", {
+					$.post("percentages.php", {
 						queryValues: "SELECT cp.country, caseByPop, testByPop, caseByTest, deadByPop, deadByCase, recoverByPop, recoverbyCase,  flag FROM casesPercentage AS cp JOIN testsPercentage AS tp ON cp.country = tp.country JOIN deathsPercentage AS dp ON tp.country = dp.country JOIN recoveredPercentage AS rp ON dp.country = rp.country JOIN generaltable AS gt ON rp.country = gt.country ORDER BY `cp`.`country` ASC"
 					}, function(sendData) {
-						$('#graphDiv').html(sendData);
+						$('#percentDiv').html(sendData);
 					});
 				}
 			});
