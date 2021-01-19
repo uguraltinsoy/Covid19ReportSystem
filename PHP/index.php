@@ -21,6 +21,10 @@ $conn = mysqli_connect($servername, $username, $password, $database);
 	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<style>
+		body {
+			background-color: #181A1B;
+		}
+
 		.styled-table {
 			width: 100%;
 			border-collapse: collapse;
@@ -42,15 +46,17 @@ $conn = mysqli_connect($servername, $username, $password, $database);
 		}
 
 		.styled-table tbody tr {
+			color: white;
 			border-bottom: 1px solid #dddddd;
 		}
 
 		.styled-table tbody tr:nth-of-type(even) {
-			background-color: #D6D6D6;
+			color: white;
+			background-color: #2F3335;
 		}
 
 		.styled-table tbody tr:last-of-type {
-			border-bottom: 2px solid #009879;
+			border-bottom: 2px solid #8ACA2B;
 		}
 
 		img {
@@ -117,7 +123,7 @@ $conn = mysqli_connect($servername, $username, $password, $database);
 		}
 
 		.inactice {
-			color: black;
+			color: white;
 		}
 	</style>
 </head>
@@ -174,7 +180,7 @@ $conn = mysqli_connect($servername, $username, $password, $database);
 		<div class="container" style="width: 40%; margin-top:50px;">
 			<div class="row">
 				<div class="col-md" style="border: 1px solid #ddd; margin:2px">
-					<div style="font-size: 20px;  border-bottom: 1px solid #ddd; width: 100% !important;">ACTIVE CASES</div>
+					<div style="font-size: 20px;  border-bottom: 1px solid #ddd; width: 100% !important; color: white;">ACTIVE CASES</div>
 					<?php
 					$query = "Select sum(active) as 'sumValue' from generaltable";
 					$result = mysqli_query($conn, $query);
@@ -182,12 +188,12 @@ $conn = mysqli_connect($servername, $username, $password, $database);
 					$encode = json_encode($json);
 					$div = $json->sumValue;
 					$format = number_format($div);
-					echo "<div style=\"font-size: 20px;\">$format</div>";
+					echo "<div style=\"font-size: 20px; color: white;\">$format</div>";
 					?>
 
 				</div>
 				<div class="col-md" style="border: 1px solid #ddd; margin:2px; ">
-					<div style="font-size: 20px; border-bottom: 1px solid #ddd; width: 100% !important;">CLOSED CASES</div>
+					<div style="font-size: 20px; border-bottom: 1px solid #ddd; width: 100% !important; color: white;">CLOSED CASES</div>
 					<?php
 					$query = "Select (sum(cases)-sum(active)) as 'sumValue' from generaltable";
 					$result = mysqli_query($conn, $query);
@@ -195,7 +201,7 @@ $conn = mysqli_connect($servername, $username, $password, $database);
 					$encode = json_encode($json);
 					$div = $json->sumValue;
 					$format = number_format($div);
-					echo "<div style=\"font-size: 20px;\">$format</div>";
+					echo "<div style=\"font-size: 20px; color: white;\">$format</div>";
 					?>
 				</div>
 			</div>
@@ -203,7 +209,7 @@ $conn = mysqli_connect($servername, $username, $password, $database);
 	</div>
 
 	<!-- Tabs -->
-	<div style="margin-top: 20px; margin-bottom:20px;">
+	<div style="margin-top: 20px; margin-bottom:30px;">
 		<div style="width: 70%; margin:auto; height: 40px;">
 			<div class="container">
 				<div class="row">
@@ -220,14 +226,12 @@ $conn = mysqli_connect($servername, $username, $password, $database);
 			</div>
 		</div>
 	</div>
-
-
-	<div>
+	<div style="margin-top: 30px;">
 		<!-- World Record -->
 		<div id="mTableContainer" style="width: 100%;">
-			<div style="width: 70%; margin:auto;">
+			<div style="width: 100%; padding-left:20px;">
 				<div style="margin-top: 10px;">
-					<div class="post_div txt" style="float:left; width: 160px;">Search Country : </div>
+					<div class="post_div txt" style="float:left; width: 160px; color:white;">Search Country : </div>
 					<div class="post_div" style="float:left; width: 200px"><input class="form-control" type="text" id="mSumbit"></div>
 				</div>
 			</div>
@@ -267,20 +271,20 @@ $conn = mysqli_connect($servername, $username, $password, $database);
 
 		<!-- Percentages -->
 		<div id="mPercentContainer" style="width: 100%; display:none;">
-			<div style="width: 70%; margin:auto;">
-				<div style="margin-top: 10px;">
-					<div class="post_div txt" style="float:left; width: 160px;">Search Country : </div>
+			<div style="width: 100%; margin:auto;">
+				<div style="margin-top: 10px; padding-left:20px;">
+					<div class="post_div txt" style="float:left; width: 160px; color:white;">Search Country : </div>
 					<div class="post_div" style="float:left; width: 200px"><input class="form-control" type="text" id="mPercentages"></div>
 				</div>
 			</div>
 			<!-- percentages.php yi çektiğimiz div -->
-			<div id="percentDiv" style="width: 70%; margin:auto; padding-top:40px;"></div>
+			<div id="percentDiv" style="width: 100%; margin:auto; padding-top:40px;"></div>
 		</div>
 
 		<!-- Continents -->
 		<div id="mContinentContainer" style="width: 100%; display:none;">
 			<!-- continents.php yi çektiğimiz div -->
-			<div id="continentDiv" style="width: 70%; margin:auto; padding-top:40px;"></div>
+			<div id="continentDiv" style="width: 100%; margin:auto; padding-top:40px;"></div>
 		</div>
 	</div>
 

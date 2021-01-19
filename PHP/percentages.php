@@ -14,22 +14,27 @@ $queryValues = $_POST['queryValues'];
 
 <head>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        body {
+            background-color: #181A1B;
+        }
+    </style>
 </head>
 
 <body>
     <table class="styled-table">
         <thead>
             <tr>
-                <th>#</th>
-                <th>Flag</th>
-                <th>Country</th>
-                <th>Case By Pop</th>
-                <th>Test By Pop</th>
-                <th>Case By Test</th>
-                <th>Dead By Pop</th>
-                <th>Dead By Case</th>
-                <th>Recover By Pop</th>
-                <th>Recover By Case</th>
+                <th style="height: 60px;">#</th>
+                <th style="height: 60px;">Flag</th>
+                <th style="height: 60px;">Country</th>
+                <th style="height: 60px;">Case By Pop</th>
+                <th style="height: 60px;">Test By Pop</th>
+                <th style="height: 60px;">Case By Test</th>
+                <th style="height: 60px;">Dead By Pop</th>
+                <th style="height: 60px;">Dead By Case</th>
+                <th style="height: 60px;">Recover By Pop</th>
+                <th style="height: 60px;">Recover By Case</th>
             </tr>
         </thead>
         <tbody>

@@ -11,25 +11,30 @@ $query = "SELECT * From continents";
 ?>
 
 <html>
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
 
 <head>
-
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        body {
+            background-color: #181A1B;
+        }
+    </style>
 </head>
 
 <body>
     <table class="styled-table">
         <thead>
             <tr>
-                <th>#</th>
-                <th>Continent</th>
-                <th>Cases</th>
-                <th>Deaths</th>
-                <th>Recovered</th>
-                <th>Active</th>
-                <th>Critical</th>
-                <th>Tests</th>
-                <th>Population</th>
+                <th style="height: 60px;">#</th>
+                <th style="height: 60px;">Continent</th>
+                <th style="height: 60px;">Cases</th>
+                <th style="height: 60px;">Deaths</th>
+                <th style="height: 60px;">Recovered</th>
+                <th style="height: 60px;">Active</th>
+                <th style="height: 60px;">Critical</th>
+                <th style="height: 60px;">Tests</th>
+                <th style="height: 60px;">Population</th>
             </tr>
         </thead>
         <tbody>
@@ -47,15 +52,15 @@ $query = "SELECT * From continents";
                 $population = number_format($row[7]);
 
                 echo "<tr>";
-                echo "<td>{$count}</td>";
-                echo "<td>{$continent}</td>";
-                echo "<td>{$cases}</td>";
-                echo "<td>{$testByPop}</td>";
-                echo "<td>{$deaths}</td>";
-                echo "<td>{$recovered}</td>";
-                echo "<td>{$active}</td>";
-                echo "<td>{$tests}</td>";
-                echo "<td>{$population}</td>";
+                echo "<td style=\"height: 60px;\">{$count}</td>";
+                echo "<td style=\"height: 60px;\">{$continent}</td>";
+                echo "<td style=\"height: 60px;\">{$cases}</td>";
+                echo "<td style=\"height: 60px;\">{$testByPop}</td>";
+                echo "<td style=\"height: 60px;\">{$deaths}</td>";
+                echo "<td style=\"height: 60px;\">{$recovered}</td>";
+                echo "<td style=\"height: 60px;\">{$active}</td>";
+                echo "<td style=\"height: 60px;\">{$tests}</td>";
+                echo "<td style=\"height: 60px;\">{$population}</td>";
                 echo "</tr>";
                 $count++;
             }
