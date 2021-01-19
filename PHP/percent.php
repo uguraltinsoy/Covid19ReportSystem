@@ -13,9 +13,7 @@ $queryValues = $_POST['queryValues'];
 <html>
 
 <head>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-
-    <link rel="stylesheet" href="index.css" />
+    
 </head>
 
 <body>
