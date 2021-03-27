@@ -1,22 +1,22 @@
 # Covid19ReportSystem
 
 
-# Kısaca Nedir
-- Java, MySQL, PHP Tabanlı bir Covid takip sitesi
-- Mevcut Verileri Java tarafından Her 1 Saate bir güncellenip MySQL e aktarılır
-- PHP tarafında ise veriler her 1sn de bir kontrol edilir ve güncel olarak gösterilir 
+# What is Briefly
+- Java, MySQL, PHP Based Covid monitoring site
+- Existing Data is updated by Java every 1 Hour and transferred to MySQL
+- On the PHP side, data is checked every 1 second and displayed up-to-date.
 
-# Kurulum
-## 1. Adım
+# Setup
+## Step 1
 
-- Xampp'ı çalıştırın
+- Run xampp
 - Apache ve MySQL Start
-- Ardından MySQL Admin'e basın
-- Açılan sayfada sol tarafda datalar yer alıcak ordan yeni diyip adını 'covidservice' koyun
-- Sonra o datayı seçin 
-- Yukarıdaki menuden SQL'i şeçin ve Aşağıda verdiğim kodu girin
+- Then hit MySQL Manager
+- On the page that opens, there will be data on the left, say new and name it 'covidservice'.
+- Then select that data
+- Select SQL from the menu above and enter the code I gave below
 
-### 1. Tablo
+### Table 1
 ```
 create table generaltable (
     updated bigint(14) NOT NULL,
@@ -43,34 +43,34 @@ create table generaltable (
     recoveredPerOneMillion double,
     criticalPerOneMillion double);
 ```
-### 2. Tablo
+### Table 2
 ```
 CREATE TABLE casesPercentage
 SELECT country,cases,todayCases, (100*cases)/population AS caseByPop
 FROM generaltable;
 ```
 
-### 3. Tablo
+### Table 3
 ```
 CREATE TABLE testsPercentage
 SELECT country,tests, (100*tests)/population AS testByPop, (100*cases)/tests AS caseByTest
 FROM generaltable;
 ```
 
-### 4. Tablo
+### Table 4
 ```
 CREATE TABLE deathsPercentage
 SELECT country, deaths, (100*deaths)/population AS deadByPop, (100*deaths)/cases AS deadByCase
 FROM generaltable;
 ```
 
-### 5. Tablo
+### Table 5
 ```
 CREATE TABLE recoveredPercentage
 SELECT country, recovered, (100*recovered)/population AS recoverByPop, (100*recovered)/cases AS recoverByCase
 FROM generaltable;
 ```
-### 6. Tablo
+### Table 6
 ```
 SELECT cp.country, caseByPop, testByPop, caseByTest, deadByPop, deadByCase, recoverByPop, recoverbyCase,  flag 
 FROM casesPercentage AS cp 
@@ -79,7 +79,7 @@ JOIN deathsPercentage AS dp ON tp.country = dp.country
 JOIN recoveredPercentage AS rp ON dp.country = rp.country 
 JOIN generaltable AS gt ON rp.country = gt.country ORDER BY `cp`.`country` ASC
 ```
-### 7. Tablo
+### Table 7
 ```
 CREATE TABLE continents(
     continent CHAR(25) PRIMARY KEY NOT NULL,
@@ -91,7 +91,7 @@ CREATE TABLE continents(
         tests INT,
         population INT);
 ```
-### 8. Insert
+### Insert 1
 ```
 INSERT INTO continents (continent,cases,deaths,recovered,active,critical,tests,population)
 SELECT 
@@ -101,7 +101,7 @@ FROM
 WHERE
     generaltable.continent = 'Asia';
 ```
-### 9. Insert
+### Insert 2
 ```
 INSERT INTO continents (continent,cases,deaths,recovered,active,critical,tests,population)
 SELECT 
@@ -111,7 +111,7 @@ FROM
 WHERE
     generaltable.continent = 'Europe';
 ```
-### 10. Insert
+### Insert 3
 ```
 INSERT INTO continents (continent,cases,deaths,recovered,active,critical,tests,population)
 SELECT 
@@ -121,7 +121,7 @@ FROM
 WHERE
     generaltable.continent = 'North America';
 ```
-### 11. Insert
+### Insert 4
 ```
 INSERT INTO continents (continent,cases,deaths,recovered,active,critical,tests,population)
 SELECT 
@@ -131,7 +131,7 @@ FROM
 WHERE
     generaltable.continent = 'South America';
 ```
-### 12. Insert
+### Insert 5
 ```
 INSERT INTO continents (continent,cases,deaths,recovered,active,critical,tests,population)
 SELECT 
@@ -141,7 +141,7 @@ FROM
 WHERE
     generaltable.continent = 'Africa';
 ```
-### 13. Insert
+### Insert 6
 ```
 INSERT INTO continents (continent,cases,deaths,recovered,active,critical,tests,population)
 SELECT 
@@ -152,13 +152,13 @@ WHERE
     generaltable.continent = 'Australia/Oceania';
 ```
 
-- Kodu Girdikten sonra sol tarafta bulunan Git Buttonuna basın
-- Tablonuz oluşturuldu
+- After Entering the Code, press the Go Button on the left.
+- Your table has been created
 
-## 2. Adım
-- Xampp'ın kurulu oldugu klasorü açın
-- 'htdocs' adlı klasorün içini boşaltın ve Github daki PHP dosyasının içindeki 'index.php' ve 'table.php' yi içine atın
+## Step 2
+- Open the folder where Xampp is installed
+- Open the folder named 'htdocs' and put 'index.php' and 'table.php' in the PHP file on Github.
 
-## 3. Adım
-- IntelliJ IDEA da Open Project diyip Github daki 'Covid19ReportSystem' ü şeçin ve projeyi run layın
-- Son olarak Xampp üzerinden  Apache Admin e Tıklayıp test edin 
+## Step 3
+- Say Open Project in IntelliJ IDEA, select 'Covid19ReportSystem' on Github and run the project
+- Finally, click on Apache Admin in Xampp and test 
